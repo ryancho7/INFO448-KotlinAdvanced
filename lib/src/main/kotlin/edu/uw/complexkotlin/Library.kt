@@ -9,7 +9,23 @@ package edu.uw.complexkotlin
 // the final string should look like FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZ for 0..15.
 // store this lambda into 'fizzbuzz' so that the tests can call it
 //
-val fizzbuzz : (IntRange) -> String = { "" }
+val fizzbuzz : (IntRange) -> String = { range ->
+    range.map { num ->
+        when {
+            (num % 15 == 0) -> "FIZZBUZZ"
+            (num % 3 == 0) -> "FIZZ"
+            (num % 5 == 0) -> "BUZZ"
+            else -> ""
+        }
+    }.fold("") {acc, s -> acc + s}
+}
+
+fun fizzbuzzgen(divisorMap: Map<Int, String>) : (IntRange) -> String = { range ->
+    range.map { num ->
+        val result = divisorMap.filterKeys{key -> num % key == 0}.values.joinToString("")
+        result
+    }.fold(""){acc, s -> acc + s}
+}
 
 // Example usage
 /*
@@ -34,16 +50,59 @@ fun process(message: String, block: (String) -> String): String {
     return ">>> ${message}: {" + block(message) + "}"
 }
 // Create r1 as a lambda that calls process() with message "FOO" and a block that returns "BAR"
-val r1 = { }
+val r1 = {
+    process("FOO") {
+        "BAR"
+    }
+}
 
 // Create r2 as a lambda that calls process() with message "FOO" and a block that upper-cases 
 // r2_message, and repeats it three times with no spaces: "WOOGAWOOGAWOOGA"
 val r2_message = "wooga"
-val r2 = { }
+val r2 = {
+    process("FOO") {
+        var res = ""
+        // using {} not () because .times() is a higher order funciton which means that it takes in a function as a parameter
+        // therefore we use {}
+        3.times {
+            res += r2_message.uppercase()
+        }
+        res
+    }
+}
 
 
 // write an enum-based state machine between talking and thinking
-enum class Philosopher { }
+enum class Philosopher {
+    THINKING {
+        override fun toString(): String {
+            return "Deep thoughts...."
+        }
+    },
+    TALKING {
+        override fun toString(): String {
+            return "Allow me to suggest an idea..."
+        }
+    };
+
+    // return type is philosopher because we when call it, we are assigning it
+    // philosopher = philosopher.signal()
+    fun signal(): Philosopher {
+        return if (this == THINKING) {
+            TALKING
+        } else {
+            THINKING
+        }
+    }
+}
+
+// EXTRA CREDIT
+
+// Seneca the Younger, also known as Lucius Annaeus Seneca the Younger, was a well known philosopher in Ancient Rome
+// known for his philosophical works and plays and was most commonly associated with Stoicism
+
+// Stoicism is an ancient philosphy that originated in ancient Greeece and Rome that places emphasis on the growth
+// of self-control, rationality, and virtue in order to achieve ethical and moral well-being
 
 // create an class "Command" that can be used as a function.
 // To do this, provide an "invoke()" function that takes a 
@@ -55,4 +114,8 @@ enum class Philosopher { }
 // val cmd = Command(": ")
 // val result = cmd("Hello!")
 // result should equal ": Hello!"
-class Command(val prompt: String) { }
+class Command(val prompt: String) {
+    operator fun invoke(message: String): String {
+        return "$prompt$message"
+    }
+}

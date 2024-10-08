@@ -21,13 +21,34 @@ class LibraryTest {
     @Test fun fizzbuzzToFifteen() {
         assertEquals("FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZ", fizzbuzz(1..15))
     }
+    // Extra credit tests
+    @Test fun fizzbuzzToFifty() {
+        assertEquals("FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZ", fizzbuzz(1..50))
+    }
+    @Test fun fizzbuzzToOneHundred() {
+        assertEquals("FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZ", fizzbuzz(1..100))
+    }
     // Fizzbuzz to 25 should equal "FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZ"
     // Fizzbuzz to 50 should equal "FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZFIZZBUZZ"
 
-    //@Test fun fizzbuzzgenToFifteen() {
-    //    val fb = fizzbuzzgen(mapOf(3 to "FIZZ", 5 to "BUZZ"))
-    //    assertEquals("FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZ", fb(1..15))
-    //}
+    @Test fun fizzbuzzgenToFifteen() {
+        val fb = fizzbuzzgen(mapOf(3 to "FIZZ", 5 to "BUZZ"))
+        assertEquals("FIZZBUZZFIZZFIZZBUZZFIZZFIZZBUZZ", fb(1..15))
+    }
+
+    // extra credit fizzbuzzgen tests
+    @Test fun fizzbuzzgenNewNum() {
+        val fb = fizzbuzzgen(mapOf(2 to "FIZZ", 5 to "BUZZ"))
+        assertEquals("FIZZFIZZBUZZFIZZFIZZFIZZBUZZ", fb(1..10))
+    }
+    @Test fun fizzbuzzgenBigNum() {
+        val fb = fizzbuzzgen(mapOf(8 to "FIZZ", 9 to "BUZZ"))
+        assertEquals("FIZZBUZZFIZZBUZZFIZZBUZZ", fb(1..30))
+    }
+    @Test fun fizzbuzzgenBigSmall() {
+        val fb = fizzbuzzgen(mapOf(3 to "FIZZ", 9 to "BUZZ"))
+        assertEquals("FIZZFIZZFIZZBUZZFIZZFIZZFIZZBUZZFIZZFIZZFIZZBUZZFIZZ", fb(1..30))
+    }
 
     @Test fun r1Test() {
         assertEquals(">>> FOO: {BAR}", r1())
